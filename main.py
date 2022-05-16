@@ -85,6 +85,30 @@ def pergessle(input):
         input = "pergessle --release_after 1980 --song_popularity 70 --genre pop"
         msg += f"POPULAR SONGS YOU SAY? DEFAULTING TO \n > {input} \n\n"
 
+    
+    dennis_list = [
+        "Arja Saijonmaa - Högt över havet - 990",
+        "Björn Skifs - Michelangelo - 1073",
+        "Bonnie Tyler - Holding out for a hero - 1387",
+        "Disturbed - Down with the sickness - 5582",
+        "Erasure - Stop - 4252",
+        "Human League - Don't you want me - 1608",
+        "Linkin Park - In the end - 839",
+        "Olsen Brothers - Fly on the wings of love - 1001",
+        "Pitbull Feat. Ke$ha - Timber - 5251",
+        "Rasmus - In the shadows - 655",
+        "Roger Pontare - Vindarna viskar mitt namn - 1009",
+        "Sandi Thom - I wish I was a punkrocker - 736",
+        "Sarek - Genom eld och vatten - 808",
+        "Vanessa Carlton - A thousand miles - 147",
+    ]
+
+    if input.lower().startswith("pergessle dennis"):
+        msg += "Your GRANTED song from 'The List of Dennis':\n"
+        return msg + random.choice(dennis_list)
+
+
+
     arg_splits = input.split("--")
 
     for splits in arg_splits[1:]:
@@ -220,7 +244,7 @@ def pergessle(input):
         msg = ".\n\n"
 
     if include_uri:
-        uris = [SONGS_METADATA.get((song[1], song[2]), {}).get("uri", "") for song in songs]
+        uris = [SONGS_METADATA_DICT.get((song[1], song[2]), {}).get("uri", "") for song in songs]
         msg += f"uris: {uris}\n"
 
     
