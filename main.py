@@ -6,10 +6,7 @@ import filters
 from dotenv import load_dotenv
 from constants import KAREOKE, SONGS_METADATA_DICT
 
-
-
 load_dotenv()
-
 
 TOKEN = os.getenv("TOKEN")
 client = discord.Client()
@@ -68,8 +65,6 @@ def pergessle(input):
         input = "pergessle --release_after 1980 --song_popularity 70 --genre pop"
         msg += f"POPULAR SONGS YOU SAY? DEFAULTING TO \n > {input} \n\n"
     
-
-    
     dennis_list = [
         "Arja Saijonmaa - Högt över havet - 990",
         "Björn Skifs - Michelangelo - 1073",
@@ -90,7 +85,6 @@ def pergessle(input):
     if input.lower().startswith("pergessle dennis"):
         msg += "Your GRANTED song from 'The List of Dennis':\n"
         return msg + random.choice(dennis_list)
-
 
     filter_mapping = {
         "artist": filters.filter_artist,
@@ -123,9 +117,7 @@ def pergessle(input):
         elif command == "include-id":
             include_id = True
 
-
     msg += "\n"
-    
     if quiet:
         msg = ".\n"
         
@@ -137,7 +129,6 @@ def pergessle(input):
         res = random.sample(songs, k=min(amount, len(songs)))
     else:
         res = random.choices(songs, k=amount)
- 
 
     if include_uri:
         uris = [SONGS_METADATA_DICT.get((song[1].lower(), song[2].lower()), {}).get("uri", "") for song in songs]
@@ -151,6 +142,4 @@ def pergessle(input):
     print(msg)
     return msg
 
-
 client.run(TOKEN)
-
