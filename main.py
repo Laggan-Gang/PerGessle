@@ -125,6 +125,10 @@ def pergessle(input):
 
 
     msg += "\n"
+    
+    if quiet:
+        msg = ".\n"
+        
     if len(songs) == 0:
         msg += "\n*No artists/songs found, please specify a better querry.*\n"
         return msg
@@ -134,8 +138,6 @@ def pergessle(input):
     else:
         res = random.choices(songs, k=amount)
  
-    if quiet:
-        msg = ".\n"
 
     if include_uri:
         uris = [SONGS_METADATA_DICT.get((song[1].lower(), song[2].lower()), {}).get("uri", "") for song in songs]

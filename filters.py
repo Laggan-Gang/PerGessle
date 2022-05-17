@@ -38,6 +38,7 @@ def filter_genre(songs, msg, input):
             artists.add(artist)
     
     songs = new_songs
+    print(songs)
     
     if songs and len(genres) <= 10:
         msg += f"Found songs with artist under genre {genre}, found in {genres}!! {len(songs)} songs from {len(artists)} artists.\n"
@@ -46,7 +47,7 @@ def filter_genre(songs, msg, input):
     else:
         msg += f"Found no songs with genre {genre}!!\n"
     
-    return song, msg
+    return songs, msg
 
 def filter_artist_popularity(songs, msg, input):
     threshold = int(input)
