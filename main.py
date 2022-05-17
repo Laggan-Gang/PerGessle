@@ -39,6 +39,7 @@ def pergessle(input):
     include_uri = False
     songs = KAREOKE
     no_replace = False
+    include_id = False
 
     msg = ".\n"
     if input.lower().startswith("pergessle --help")  or input.lower().startswith("pergessle help"):
@@ -54,6 +55,7 @@ def pergessle(input):
         msg += "PerGessle --no-replace: Sets flag to use no replacement, e.g. we can't get the same song twice.\n"
         msg += "PerGessle --quiet: Hides extra msg information except the songs.\n"
         msg += "PerGessle --include-uri: Includes a spotify uri to the song if exists.\n"
+        msg += "PerGessle --include-id: Includes the local id to the song.\n"
         msg += "PerGessle --help: This message.\n"
         msg += "also, if you don't know, just go for pergessle good songs or pergessle popular."
         return msg
@@ -118,6 +120,8 @@ def pergessle(input):
             quiet = True
         elif command == "include-uri":
             include_uri = True
+        elif command == "include-id":
+            include_id = True
 
 
     msg += "\n"
@@ -131,15 +135,17 @@ def pergessle(input):
         res = random.choices(songs, k=amount)
  
     if quiet:
-        msg = ".\n\n"
+        msg = ".\n"
 
     if include_uri:
-        uris = [SONGS_METADATA_DICT.get((song[1], song[2]), {}).get("uri", "") for song in songs]
+        uris = [SONGS_METADATA_DICT.get((song[1].lower(), song[2].lower()), {}).get("uri", "") for song in songs]
         msg += f"uris: {uris}\n"
 
-    
-    res = [f"{r[1]}: {r[2]}" for r in res]
-    msg += "You can choose either: \n" + "\n or \n".join(res) + "."
+    if include_id:
+        res = [f"{r[1]}: {r[2]}, {r[0]}" for r in res]
+    else:
+        res = [f"{r[1]}: {r[2]}" for r in res]
+    msg += "Songs: \n> " + "\n> ".join(res)
     print(msg)
     return msg
 
