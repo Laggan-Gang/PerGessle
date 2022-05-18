@@ -49,28 +49,32 @@ def filter_genre(songs, msg, input):
     return songs, msg
 
 def filter_artist_popularity(songs, msg, input):
-    threshold = int(input)
+    res = input.split("-", 1)
+    lower_threshold = int(res[0])
+    upper_threshold = int(res[1]) if len(res) > 1 else 100
     new_songs = []
     artists = set()
     for song in songs:
         artist = song[1]
         metadata = ARTISTS_METADATA_DICT.get(artist.lower(), {})
         populartiy = metadata.get("popularity", 0)
-        if populartiy >= threshold:
+        if populartiy >= lower_threshold and populartiy <= upper_threshold:
             new_songs.append(song)
             artists.add(artist)
     
     songs = new_songs
     if songs:
-        msg += f"Found popular artists over {threshold}!! {len(songs)} songs from {len(artists)} artists.\n"
+        msg += f"Found popular artists over {lower_threshold} and under {upper_threshold}!! {len(songs)} songs from {len(artists)} artists.\n"
     else:
-        msg += f"Found no popular artists over {threshold}!!\n"
+        msg += f"Found no popular artists over {lower_threshold} and under {upper_threshold}!!\n"
     
     return songs, msg
 
 
 def filter_song_popularity(songs, msg, input):
-    threshold = int(input)
+    res = input.split("-", 1)
+    lower_threshold = int(res[0])
+    upper_threshold = int(res[1]) if len(res) > 1 else 100
     new_songs = []
     artists = set()
     for song_tuple in songs:
@@ -78,15 +82,15 @@ def filter_song_popularity(songs, msg, input):
         song = song_tuple[2]
         metadata = SONGS_METADATA_DICT.get((artist.lower(), song.lower()), {})
         populartiy = metadata.get("popularity", 0)
-        if populartiy >= threshold:
+        if populartiy >= lower_threshold and populartiy <= upper_threshold:
             new_songs.append(song_tuple)
             artists.add(artist)
     
     songs = new_songs
     if songs:
-        msg += f"Found popular songs over {threshold}!! {len(songs)} songs from {len(artists)} artists.\n"
+        msg += f"Found popular songs over {lower_threshold} and under {upper_threshold}!! {len(songs)} songs from {len(artists)} artists.\n"
     else:
-        msg += f"Found no popular songs over {threshold}!!\n"
+        msg += f"Found no popular songs over {lower_threshold} and under {upper_threshold}!!\n"
     
     return songs, msg
 

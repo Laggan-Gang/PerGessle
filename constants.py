@@ -1,8 +1,16 @@
 import json
+import os
 from dateutil import parser
-KAREOKE = json.load(open("kkareoke_songs.json", "r"))
-ARTISTS_METADATA = json.load(open("artist_metadata.json", "r"))
-SONGS_METADATA = json.load(open("songs_metadata.json", "r"))
+
+#_DATA_FOLDER = os.path.join(os.path.realpath('.'), "data")
+_DATA_FOLDER = "."
+_SONG_LIST_PATH = os.path.join(_DATA_FOLDER, "kkareoke_songs.json")
+_ARTISTS_METADATA_PATH = os.path.join(_DATA_FOLDER, "artists_metadata.json")
+_SONGS_METADATA_PATH = os.path.join(_DATA_FOLDER, "songs_metadata.json")
+
+KAREOKE = json.load(open(_SONG_LIST_PATH, "r"))
+ARTISTS_METADATA = json.load(open(_ARTISTS_METADATA_PATH, "r"))
+SONGS_METADATA = json.load(open(_SONGS_METADATA_PATH, "r"))
 
 ARTISTS_METADATA_DICT = {md["name"].lower(): md for md in ARTISTS_METADATA}
 SONGS_METADATA_DICT = {(md["song"][0].lower(), md["song"][1].lower()): md for md in SONGS_METADATA}

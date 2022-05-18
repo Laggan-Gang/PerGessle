@@ -1,5 +1,5 @@
-
 import json
+import os
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
@@ -7,11 +7,12 @@ load_dotenv()
 
 spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
-KAREOKE = json.load(open("kkareoke_songs.json", "r"))
+# DATA_FOLDER = os.path.join(os.path.realpath('.'), "data/")
+DATA_FOLDER = "./"
+KAREOKE = json.load(open(DATA_FOLDER + "kkareoke_songs.json", "r"))
 artists = list(set([song[1] for song in KAREOKE]))
 songs = list([(song[1], song[2]) for song in KAREOKE])
-print(len(artists))
-out = []
+
 
 def fetch_songs():
     items_not_found = []
@@ -47,10 +48,12 @@ def fetch_songs():
                 "uri": uri,
             })
 
-    json.dump(song_metadata, open("songs_metadata.json", "w"))
-    print(items_not_found, len(items_not_found))
+    json.dump(song_metadata, open(DATA_FOLDER + "songs_metadata.json", "w"))
+    json.dump(items_not_found, open(DATA_FOLDER + "missed_songs.json", "w"))
 
 def fetch_artists():
+    out = []
+    missed_entries = []
     for name in artists:
         results = spotify.search(q='artist:' + name, type='artist')
         items = results['artists']['items']
@@ -71,7 +74,12 @@ def fetch_artists():
                     "followers": followers,
                     "url": url
                 })
+        else:
+            missed_entries.append(name)
 
-    json.dump(out, open("artists_metadata.json", "w"))
+    json.dump(out, open(DATA_FOLDER + "artists_metadata.json", "w"))
+    json.dump(missed_entries, open(DATA_FOLDER + "missed_artists.json", "w"))
 
-
+if __name__ == "__main__":
+    fetch_artists()
+    fetch_songs()
